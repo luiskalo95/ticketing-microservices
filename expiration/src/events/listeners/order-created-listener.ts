@@ -10,16 +10,20 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     public queueGroupName = 'expiration-service';
 
     public async onMessage(data: OrderCreatedEvent['data'], msg: Message): Promise<void> {
+        try{
             const delay = new Date(data.expiresAt).getTime() - new Date().getTime();
             console.log('Waiting this many milliseconds to process the job:', delay);
-            await expirationQueue.add({ orderId: data.id }, { delay });
-            /* setTimeout(() => {
+            /* await expirationQueue.add({ orderId: data.id }, { delay }); */
+            setTimeout(() => {
                 console.log('Job executed')
                 new ExpirationCompletePublisher(natsWrapper.client).publish({
                     orderId: data.id,
                 })
-            }, delay); */
+            }, delay);
             msg.ack();
+        }catch(e){
+            console.log(e)
+        }
     }
 }
 
