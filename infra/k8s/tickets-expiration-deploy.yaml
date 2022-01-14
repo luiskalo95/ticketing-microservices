@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: tickets-expiration-deploy
+spec: 
+  replicas: 1
+  selector:
+     matchLabels:
+        app: tickets-expiration
+  template:
+     metadata:
+        labels:
+           app: tickets-expiration
+     spec:
+        containers:
+          - name : tickets-expiration
+            image: luiskalo95/tickets-expiration
+            env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: 'http://tickets-nats-service:4222'   
+            - name: NATS_CLUSTER_ID
+              value: ticketing
+            - name: REDIS_HOST
+              value: tickets-expiration-redis-service-cip
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: tickets-expiration-service-cip
+spec:
+  selector:
+    app: tickets-expiration
+  ports:
+    - name: tickets-expiration
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

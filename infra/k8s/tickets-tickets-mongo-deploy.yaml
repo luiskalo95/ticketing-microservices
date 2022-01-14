@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: tickets-tickets-mongo-deploy
+spec: 
+  replicas: 1
+  selector:
+     matchLabels:
+        app: tickets-tickets-mongo
+  template:
+     metadata:
+        labels:
+           app: tickets-tickets-mongo
+     spec:
+        containers:
+          - name : tickets-tickets-mongo
+            image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: tickets-tickets-mongo-service-cip
+spec:
+  selector:
+    app: tickets-tickets-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

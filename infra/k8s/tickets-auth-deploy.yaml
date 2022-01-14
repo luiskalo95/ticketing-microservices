@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: tickets-auth-deploy
+spec: 
+  replicas: 1
+  selector:
+     matchLabels:
+        app: tickets-auth
+  template:
+     metadata:
+        labels:
+           app: tickets-auth
+     spec:
+        containers:
+          - name : tickets-auth
+            image: luiskalo95/tickets-auth
+            env:
+            - name: MONGO_URI
+              value: 'mongodb://tickets-auth-mongo-service-cip:27017/auth'
+            - name: JWT_KEY
+              valueFrom: 
+                 secretKeyRef:
+                   name: jwt-secret
+                   key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: tickets-auth-service-cip
+spec:
+  selector:
+    app: tickets-auth
+  ports:
+    - name: tickets-auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

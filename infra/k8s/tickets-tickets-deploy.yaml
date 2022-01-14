@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: tickets-tickets-deploy
+spec: 
+  replicas: 1
+  selector:
+     matchLabels:
+        app: tickets-tickets
+  template:
+     metadata:
+        labels:
+           app: tickets-tickets
+     spec:
+        containers:
+          - name : tickets-tickets
+            image: luiskalo95/tickets-tickets
+            env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: 'http://tickets-nats-service:4222'   
+            - name: NATS_CLUSTER_ID
+              value: ticketing  
+            - name: MONGO_URI
+              value: 'mongodb://tickets-tickets-mongo-service-cip:27017/tickets'
+            - name: JWT_KEY
+              valueFrom: 
+                 secretKeyRef:
+                   name: jwt-secret
+                   key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: tickets-tickets-service-cip
+spec:
+  selector:
+    app: tickets-tickets
+  ports:
+    - name: tickets-tickets
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
