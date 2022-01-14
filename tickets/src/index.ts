@@ -48,6 +48,7 @@ const start = async () => {
   }
 
   app.listen(3000, () => {
+    console.log('Tickets microservice running!');
     console.log('Listening on port 3000!!!!!!!!');
   });
 };
