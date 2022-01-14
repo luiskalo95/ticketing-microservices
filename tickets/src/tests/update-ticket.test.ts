@@ -2,7 +2,7 @@ import request from 'supertest';
 import { app } from '../app';
 import mongoose from 'mongoose';
 import { natsWrapper } from '../nats-wrapper';
-import { Subjects } from '../../../common/src/events/subjects';
+import { Subjects } from '@luiskalo95-tickets/common';
 import { Ticket } from '../models/ticket';
 
 it('returns a 404 if the provided id does not exist', async () => {
