@@ -32,7 +32,8 @@ router.post('/api/payments', [requireAuth, body('token').not().isEmpty(), body('
         orderId,
         stripeId: charge.id,
     });
-    await payment.save();
+    order.set({ status: OrderStatus.Complete});
+    await Promise.all([payment.save(),order.save()])
     new PaymentCreatedPublisher(natsWrapper.client).publish({
         id: payment.id,
         orderId: payment.orderId,

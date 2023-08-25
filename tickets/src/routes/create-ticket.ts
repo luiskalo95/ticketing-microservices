@@ -27,7 +27,7 @@ router.post('/api/tickets', [requireAuth ,
                 version: ticket.version
             });
             await SESSION.commitTransaction();
-            res.status(201).send(ticket);
+            return res.status(201).send(ticket);
         }catch(error){
             await SESSION.abortTransaction();
             throw new DatabaseConnectionError();

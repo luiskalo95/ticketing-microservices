@@ -27,7 +27,7 @@ router.delete('/api/orders/:orderId', requireAuth, async (req: Request, res: Res
             id: order.ticket.id,
         },
     });
-    res.status(204).send(order);
+    return res.status(204).send(order);
 }
 );
 

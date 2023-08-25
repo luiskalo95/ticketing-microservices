@@ -22,7 +22,7 @@ metadata:
   name: tickets-expiration-redis-service-cip
 spec:
   selector:
-    app: tickets-expiration-redis-cip
+    app: tickets-expiration-redis
   ports:
     - name: db
       protocol: TCP

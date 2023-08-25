@@ -30,7 +30,7 @@ router.put('/api/tickets/:id', [requireAuth,
             userId: ticket.userId,
             version: ticket.version,
         });
-        res.send(ticket);
+        return res.send(ticket);
     }
 );
 

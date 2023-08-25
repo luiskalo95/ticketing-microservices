@@ -49,7 +49,7 @@ router.post('/api/orders', [requireAuth, body('ticketId').not().isEmpty().custom
                 price: ticket.price
             }
         });
-        res.status(201).send(order);
+        return res.status(201).send(order);
     }
 );
 

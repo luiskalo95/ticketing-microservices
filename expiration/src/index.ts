@@ -1,6 +1,5 @@
 import { natsWrapper } from './nats-wrapper';
 import { OrderCreatedListener } from './events/listeners/order-created-listener';
-import { app } from './app';
 
 const start = async () => {
     if (!process.env.NATS_CLIENT_ID) {
@@ -31,11 +30,8 @@ const start = async () => {
     } catch (err) {
         console.error(err);
     }
-
-    app.listen(3000, () => {
-        console.log('Expiration microservice running!');
-        console.log('Listening on port 3000!!!!!!!!');
-    });
+    console.log('Expiration microservice running!');
+    console.log('Listening on port 3000!!!!!!!!');
 };
 
 start();

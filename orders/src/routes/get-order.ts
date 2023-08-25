@@ -13,7 +13,7 @@ router.get('/api/orders/:orderId', requireAuth, async (req: Request, res: Respon
     if (order.userId !== req.currentUser!.id) {
         throw new NotAuthorizedError();
     }
-    res.send(order);
+    return res.send(order);
 }
 );
 
